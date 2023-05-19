@@ -1,6 +1,53 @@
-A sample computer vision project for AT hackathon
-Entails:
-    -opencv
-    -mediapipe
-    -flask
-    
+# A sample api for interacting with the sonic-pi and computer vision
+![](media/img.png)
+## Introduction
+A simple implementation of computer vision and sonic-pi in the music and entertainment industry in creating an immersive experience for its users.
+## Methodology
+
+1) Load the hand tracking model: Load the hand tracking model from Mediapipe. The hand tracking model will detect the hand and its landmarks.
+
+2) Load the drawing module: Load the drawing module from OpenCV. The drawing module will be used to draw the virtual drum stick on the detected hand.
+
+3) Define the region of interest: Define the region of interest (ROI) around the detected hand. This ROI will be used to draw the virtual drum stick on the detected hand.
+
+4) Define the drum stick angles: Define the drum stick angles for the left and right turns. These angles will be used to calculate the drum stick direction based on the hand landmarks.
+
+5) Calculate the drum stick direction: Calculate the drum stick direction based on the hand landmarks. You can use the position of the thumb and the index finger to calculate the direction.
+
+## Installation
+
+Clone the Repository
+and Install the library
+
+```bash
+  pip install opencv-python
+  pip install mediapipe
+  pip install Flask
+```
+
+## Run This
+
+```bash
+   python3 -m app.py
+```
+
+## Results
+
+Using virtual drumming with Mediapipe and OpenCV, we were able to successfully control sonic-pi using hand movements. The controls were responsive and accurate, allowing us to easily make beats
+
+## Conclusion
+
+Virtual drumming with Mediapipe and OpenCV is a powerful tool that can be used to make beats using hand movements. With this technique, we were able to make beats without using a physical drumming stick or a controller, which is a fun and immersive experience.
+
+## Tech Stack
+
+OpenCV , Mediapipe , Flask
+
+## Acknowledgements
+
+- [Hand Detection | mediapipe](https://google.github.io/mediapipe/solutions/pose.html)
+
+## Contributers
+
+This is the list of contributors
+    -Praise Godwins <a href = 'github.com/godwins3'>
