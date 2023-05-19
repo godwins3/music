@@ -14,7 +14,7 @@ stickWidth = 130
 stickHeight = 30
 
 #================================================================================================
-# My capera object and its settings 
+# My camera object and its settings 
 cap = cv2.VideoCapture(1)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
