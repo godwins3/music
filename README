@@ -1,0 +1,6 @@
+A sample computer vision project for AT hackathon
+Entails:
+    -opencv
+    -mediapipe
+    -flask
+    
