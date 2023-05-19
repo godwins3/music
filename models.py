@@ -1,12 +1,26 @@
 import cv2
 
 #================================================================================================
+#initializing some variables and constants
+FPS = 30
+WIDTH = 1280
+HEIGHT = 720
+
+FONT = cv2.FONT_HERSHEY_SIMPLEX
+stickColor = (0,255,0)
+FONT_COLOR = (255,0,255)
+
+stickWidth = 130
+stickHeight = 30
+
+#================================================================================================
 # My Camera object and its settings 
 CAM = cv2.VideoCapture(1)
 CAM.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
 CAM.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
 CAM.set(cv2.CAP_PROP_FPS,FPS)
 CAM.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'))
+
 
 #================================================================================================
 class myHands:
@@ -57,11 +71,12 @@ class main():
                 for hand in myHands[0]:
                     cv2.rectangle(
                         frame,
-                        (int(hand[8][0] - PADDLE_WIDTH/2),0), 
-                        (int(hand[8][0] + PADDLE_WIDTH/2),PADDLE_HEIGHT),
+                        (int(hand[8][0] - stickWidth/2),0), 
+                        (int(hand[8][0] + stickWidth/2), stickHeight),
                         (0,255,0),
                         -1
                     )
+                    
         CAM.release()   
 
 
