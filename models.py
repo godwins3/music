@@ -14,12 +14,12 @@ stickWidth = 130
 stickHeight = 30
 
 #================================================================================================
-# My Camera object and its settings 
-CAM = cv2.VideoCapture(1)
-CAM.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
-CAM.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
-CAM.set(cv2.CAP_PROP_FPS,FPS)
-CAM.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'))
+# My capera object and its settings 
+cap = cv2.VideoCapture(1)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
+cap.set(cv2.CAP_PROP_FPS,FPS)
+cap.set(cv2.CAP_PROP_FOURCC,cv2.VideoWriter_fourcc(*'MJPG'))
 
 
 #================================================================================================
@@ -59,7 +59,7 @@ mpHands = myHands()
 class main():
     def main():
         while True:
-            isTrue,frame = CAM.read()
+            isTrue,frame = cap.read()
 
             if not(isTrue):
                 break
@@ -77,7 +77,7 @@ class main():
                         -1
                     )
                     
-        CAM.release()   
+        cap.release()   
 
 
         return
