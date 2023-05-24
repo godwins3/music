@@ -29,22 +29,22 @@ def video_feed():
 
         # Save Cam images frames to an in-program stream
         # Setup video stream on a processor Thread for faster speed
-    if WEBCAM:   #  Start Web Cam stream (Note USB webcam must be plugged in)
-        print("Initializing USB Web Camera ....")
-        vs = WebcamVideoStream().start()
-        vs.CAM_SRC = WEBCAM_SRC
-        vs.CAM_WIDTH = WEBCAM_WIDTH
-        vs.CAM_HEIGHT = WEBCAM_HEIGHT
-        time.sleep(4.0)  # Allow WebCam to initialize
-    else:
-        print("Initializing Pi Camera ....")
-        vs = PiVideoStream().start()
-        #vs.camera.rotation = CAMERA_ROTATION
-        #vs.camera.hflip = CAMERA_HFLIP
-        #vs.camera.vflip = CAMERA_VFLIP
-        time.sleep(2.0)  # Allow PiCamera to initialize
+    # if WEBCAM:   #  Start Web Cam stream (Note USB webcam must be plugged in)
+    #     print("Initializing USB Web Camera ....")
+    #     vs = WebcamVideoStream().start()
+    #     vs.CAM_SRC = WEBCAM_SRC
+    #     vs.CAM_WIDTH = WEBCAM_WIDTH
+    #     vs.CAM_HEIGHT = WEBCAM_HEIGHT
+    #     time.sleep(4.0)  # Allow WebCam to initialize
+    # else:
+    #     print("Initializing Pi Camera ....")
+    #     vs = PiVideoStream().start()
+    #     #vs.camera.rotation = CAMERA_ROTATION
+    #     #vs.camera.hflip = CAMERA_HFLIP
+    #     #vs.camera.vflip = CAMERA_VFLIP
+    #     time.sleep(2.0)  # Allow PiCamera to initialize
 
-    sonicTrack()
+    # sonicTrack()
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
