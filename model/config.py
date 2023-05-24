@@ -8,7 +8,7 @@ windowOn = True    # Set to True displays opencv windows (GUI desktop reqd)
 
 # Camera Settings
 # ---------------
-WEBCAM = False        # False=PiCamera True=USB WebCamera
+WEBCAM = True        # False=PiCamera True=USB WebCamera
 
 # Web Camera Settings
 WEBCAM_SRC = 0        # default= 0   USB opencv connection number
