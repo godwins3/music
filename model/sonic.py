@@ -39,6 +39,7 @@ import cv2
 from threading import Thread
 from psonic import *
 
+
 # Calculated Variables Should not need changing by user
 ####
 
@@ -188,7 +189,6 @@ class WebcamVideoStream:
         # indicate that the thread should be stopped
         self.stopped = True
         self.stream.release()
-
 #-----------------------------------------------------------------------------------------------
 def trackPoint(grayimage1, grayimage2):
     moveData = []   # initialize list of movementCenterPoints
@@ -340,6 +340,7 @@ def sonicTrack():
         print("press ctrl-c to quit")
     print("Start Motion Tracking ....")
     # initialize image1 using image2 (only done first time)
+    vs = WebcamVideoStream()
     image2 = vs.read()
     image1 = image2
     grayimage1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
