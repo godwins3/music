@@ -1,50 +1,51 @@
 from flask import Flask, render_template, Response
 import cv2
-from psonic import *
-import threading
+from model.sonic import*
 
 app = Flask(__name__)
 
-# Global variables
-camera = cv2.VideoCapture(0)
-frame_lock = threading.Lock()
+# Create a VideoCapture object.
+cap = cv2.VideoCapture(0)
+
+def generate_frames():
+    while True:
+        # Read a frame from the webcam.
+        ret, frame = cap.read()
+
+        # Convert the frame to a NumPy array.
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Yield the frame.
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
+#================================================================================================================================
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-def process_image():
-    while True:
-        with frame_lock:
-            _, frame = camera.read()
-            # Perform image processing on 'frame' using OpenCV
-            # ...
-
-            # Generate audio using psonic based on the processed image
-            # ...
-            # Example: Play a note based on the average pixel intensity
-            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            avg_intensity = int(gray_frame.mean())
-            synth.play(70 + avg_intensity)
-
-def generate_frames():
-    while True:
-        with frame_lock:
-            _, frame = camera.read()
-
-        _, jpeg = cv2.imencode('.jpg', frame)
-        frame_bytes = jpeg.tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n\r\n')
-
 @app.route('/video_feed')
 def video_feed():
+    
+        # Save Cam images frames to an in-program stream
+        # Setup video stream on a processor Thread for faster speed
+    if WEBCAM:   #  Start Web Cam stream (Note USB webcam must be plugged in)
+        print("Initializing USB Web Camera ....")
+        vs = WebcamVideoStream().start()
+        vs.CAM_SRC = WEBCAM_SRC
+        vs.CAM_WIDTH = WEBCAM_WIDTH
+        vs.CAM_HEIGHT = WEBCAM_HEIGHT
+        time.sleep(4.0)  # Allow WebCam to initialize
+    else:
+        print("Initializing Pi Camera ....")
+        vs = PiVideoStream().start()
+        #vs.camera.rotation = CAMERA_ROTATION
+        #vs.camera.hflip = CAMERA_HFLIP
+        #vs.camera.vflip = CAMERA_VFLIP
+        time.sleep(2.0)  # Allow PiCamera to initialize
+
+    sonicTrack()
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    # Start a separate thread for image processing and audio generation
-    processing_thread = threading.Thread(target=process_image)
-    processing_thread.daemon = True
-    processing_thread.start()
-
     app.run(debug=True)

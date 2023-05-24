@@ -38,7 +38,6 @@ import time
 import cv2
 from threading import Thread
 from psonic import *
-from config import *
 
 # Calculated Variables Should not need changing by user
 ####
@@ -399,10 +398,10 @@ def sonicTrack():
                 if drumDoubleOn:
                     for i in range ( drumVertZone, CAMERA_HEIGHT, drumVertZone):
                         cv2.line( image2, (0, i), (CAMERA_WIDTH, i ), cvBlue, 1 )          
-            if windowDiffOn:
-                cv2.imshow('Difference Image', differenceImage)
-            if windowThreshOn:
-                cv2.imshow('OpenCV Threshold', thresholdImage)
+            # if windowDiffOn:
+            #     cv2.imshow('Difference Image', differenceImage)
+            # if windowThreshOn:
+            #     cv2.imshow('OpenCV Threshold', thresholdImage)
             if windowBigger > 1:  # Note setting a bigger window will slow the FPS
                 image2 = cv2.resize( image2,( big_w, big_h ))
             cv2.imshow('Movement Status  (Press q in Window to Quit)', image2)
