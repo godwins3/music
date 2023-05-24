@@ -1,4 +1,4 @@
 opencv-python
 Flask
 mediapipe
-psonic
+python-sonic
