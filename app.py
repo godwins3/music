@@ -1,51 +1,36 @@
 from flask import Flask, render_template, Response
 import cv2
-from model.sonic import*
 
 app = Flask(__name__)
 
-# Create a VideoCapture object.
-cap = cv2.VideoCapture(0)
+camera = cv2.VideoCapture('rtsp://freja.hiof.no:1935/rtplive/_definst_/hessdalen03.stream')  # use 0 for web camera
+#  for cctv camera use rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' instead of camera
+# for local webcam use cv2.VideoCapture(0)
 
-def generate_frames():
+def gen_frames():  # generate frame by frame from camera
     while True:
-        # Read a frame from the webcam.
-        ret, frame = cap.read()
+        # Capture frame-by-frame
+        success, frame = camera.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
-        # Convert the frame to a NumPy array.
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Yield the frame.
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n')
-#================================================================================================================================
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/video_feed')
 def video_feed():
+    #Video streaming route. Put this in the src attribute of an img tag
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-        # Save Cam images frames to an in-program stream
-        # Setup video stream on a processor Thread for faster speed
-    # if WEBCAM:   #  Start Web Cam stream (Note USB webcam must be plugged in)
-    #     print("Initializing USB Web Camera ....")
-    #     vs = WebcamVideoStream().start()
-    #     vs.CAM_SRC = WEBCAM_SRC
-    #     vs.CAM_WIDTH = WEBCAM_WIDTH
-    #     vs.CAM_HEIGHT = WEBCAM_HEIGHT
-    #     time.sleep(4.0)  # Allow WebCam to initialize
-    # else:
-    #     print("Initializing Pi Camera ....")
-    #     vs = PiVideoStream().start()
-    #     #vs.camera.rotation = CAMERA_ROTATION
-    #     #vs.camera.hflip = CAMERA_HFLIP
-    #     #vs.camera.vflip = CAMERA_VFLIP
-    #     time.sleep(2.0)  # Allow PiCamera to initialize
 
-    # sonicTrack()
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/')
+def index():
+    """Video streaming home page."""
+    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
