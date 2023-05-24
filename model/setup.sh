@@ -144,6 +144,6 @@ To launch
     ./sonic-track.sh
 
 "
-echo $DEST_DIR "Good Luck Claude ..."
+echo $DEST_DIR "Good Luck Praise ..."
 echo "Bye"
 

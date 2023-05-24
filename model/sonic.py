@@ -14,11 +14,11 @@ print("Loading Please Wait ....")
 configFilePath = baseDir + "config.py"
 if not os.path.exists(configFilePath):
     print("ERROR - Missing config.py file - Could not find Configuration file %s" % (configFilePath))
-    import urllib2
+    import urllib
     config_url = "https://raw.github.com/pageauc/sound-track/master/config.py"
     print("   Attempting to Download config.py file from %s" % ( config_url ))
     try:
-        wgetfile = urllib2.urlopen(config_url)
+        wgetfile = urllib.urlopen(config_url)
     except:
         print("ERROR - Download of config.py Failed")
         print("   Try Rerunning the sound-track-install.sh Again.")
@@ -105,18 +105,16 @@ def drumSnare(): # Edit this optional thread loop see config.py drumSnareOn Vari
         sleep(1)
 
 #-----------------------------------------------------------------------------------------------
+
+
 class PiVideoStream:
     def __init__(self, resolution=(CAMERA_WIDTH, CAMERA_HEIGHT), framerate=CAMERA_FRAMERATE, rotation=0, hflip=False, vflip=False):
-        # initialize the camera and stream
-        self.camera = PiCamera()
-        self.camera.resolution = resolution
-        self.camera.rotation = rotation
-        self.camera.framerate = framerate
-        self.camera.hflip = hflip
-        self.camera.vflip = vflip
-        self.rawCapture = PiRGBArray(self.camera, size=resolution)
-        self.stream = self.camera.capture_continuous(self.rawCapture,
-            format="bgr", use_video_port=True)
+        # initialize the camera settings
+        self.camera = cv2.VideoCapture(0)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, resolution[0])
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, resolution[1])
+        self.camera.set(cv2.CAP_PROP_FPS, framerate)
+        self.camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
         # initialize the frame and the variable used to indicate
         # if the thread should be stopped
@@ -132,19 +130,16 @@ class PiVideoStream:
 
     def update(self):
         # keep looping infinitely until the thread is stopped
-        for f in self.stream:
-            # grab the frame from the stream and clear the stream in
-            # preparation for the next frame
-            self.frame = f.array
-            self.rawCapture.truncate(0)
-
-            # if the thread indicator variable is set, stop the thread
-            # and resource camera resources
+        while True:
             if self.stopped:
-                self.stream.close()
-                self.rawCapture.close()
-                self.camera.close()
+                self.camera.release()
                 return
+
+            # read the next frame from the camera
+            ret, frame = self.camera.read()
+
+            if ret:
+                self.frame = frame
 
     def read(self):
         # return the frame most recently read
@@ -436,9 +431,9 @@ if __name__ == '__main__':
             else:
                 print("Initializing Pi Camera ....")
                 vs = PiVideoStream().start()
-                vs.camera.rotation = CAMERA_ROTATION
-                vs.camera.hflip = CAMERA_HFLIP
-                vs.camera.vflip = CAMERA_VFLIP
+                #vs.camera.rotation = CAMERA_ROTATION
+                #vs.camera.hflip = CAMERA_HFLIP
+                #vs.camera.vflip = CAMERA_VFLIP
                 time.sleep(2.0)  # Allow PiCamera to initialize
 
             sonicTrack()
