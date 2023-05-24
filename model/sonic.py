@@ -38,6 +38,7 @@ import time
 import cv2
 from threading import Thread
 from psonic import *
+from config import *
 
 # Calculated Variables Should not need changing by user
 ####
