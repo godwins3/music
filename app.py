@@ -1,11 +1,11 @@
-from flask import Flask, session, Request,render_template
+from flask import Flask
 from models import main
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    main()
+    main.main()
 
 
 if __name__ == '__main__':
