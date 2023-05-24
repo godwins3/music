@@ -26,7 +26,7 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    
+
         # Save Cam images frames to an in-program stream
         # Setup video stream on a processor Thread for faster speed
     if WEBCAM:   #  Start Web Cam stream (Note USB webcam must be plugged in)
